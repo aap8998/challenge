@@ -1,34 +1,34 @@
-from fastapi import FastAPI
-from strawberry.asgi import GraphQL
-import strawberry
-from typing import List
-import pandas as pd
 import os
+from typing import List
+
+import strawberry
+from strawberry.asgi import GraphQL
+import pandas as pd
+from fastapi import FastAPI
+
+from app.swagger import custom_openapi
+from app.schemas import Item
 
 
-@strawberry.type
-class Item:
-    id: str
-    name: str
+app = FastAPI()
 
 @strawberry.type
 class Query:
     @strawberry.field
     def items(self, info) -> List[Item]:
         return items
-
-script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, 'inventory.csv')
 schema = strawberry.Schema(query=Query)
+app.add_route("/graphql", GraphQL(schema=schema))
+
+# Custom OpenAPI schema for swagger in /docs
+app.openapi = lambda: custom_openapi(app)
 
 items = []
-
 def initialize_items(file_path):
     data = pd.read_csv(file_path)
     for index, row in data.iterrows():
-        items.append(Item(id=row['desc_ga_sku_producto'], name=row['desc_ga_nombre_producto_1']))
+        items.append(Item(**row))
 
+script_dir = os.path.dirname(__file__)
+file_path = os.path.join(script_dir, 'inventory.csv')
 initialize_items(file_path)
-
-app = FastAPI()
-app.add_route("/graphql", GraphQL(schema=schema, ))
