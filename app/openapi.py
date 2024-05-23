@@ -18,37 +18,23 @@ def custom_openapi(app: FastAPI):
             "requestBody": {
                 "content": {
                     "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/Item"
-                        },
-                        "example": {
-                            "query": "{ items { id_tie_fecha_valor } }"
-                        }
+                        "schema": {"$ref": "#/components/schemas/Item"},
+                        "example": {"query": "{ items { id_tie_fecha_valor } }"},
                     }
                 },
-                "required": True
+                "required": True,
             },
             "responses": {
                 "200": {
                     "description": "Successful Response",
                     "content": {
                         "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Item"
-                            },
-                            "example": {
-                                "data": {
-                                    "items": [
-                                        {
-                                            "id_tie_fecha_valor": 1
-                                        }
-                                    ]
-                                }
-                            }
+                            "schema": {"$ref": "#/components/schemas/Item"},
+                            "example": {"data": {"items": [{"id_tie_fecha_valor": 1}]}},
                         }
-                    }
+                    },
                 }
-            }
+            },
         }
     }
     if "components" not in openapi_schema:
@@ -79,7 +65,7 @@ def custom_openapi(app: FastAPI):
             "desc_ga_cod_producto": {"type": "number"},
             "desc_categoria_producto": {"type": "string"},
             "desc_categoria_prod_principal": {"type": "string"},
-        }
+        },
     }
 
     app.openapi_schema = openapi_schema
