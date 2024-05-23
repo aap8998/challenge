@@ -1,7 +1,6 @@
 ## Challenge Backend
 
-Welcome to Ariel's code challenge
-This project features a FastAPI backend for serving a csv file via GraphQL
+Welcome to Ariel's code challenge, featuring a FastAPI backend for serving a csv file via GraphQL
 
 ### How to run
 
