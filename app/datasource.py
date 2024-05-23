@@ -5,7 +5,7 @@ from app.schemas import Item
 
 
 def initialize_items():
-    items = []  # Initialize the items list
+    items = []
     script_dir = os.path.dirname(__file__)
     file_path = os.path.join(script_dir, 'inventory.csv')
     data = pd.read_csv(file_path)

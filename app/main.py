@@ -1,9 +1,7 @@
-import os
 from typing import List
 
 import strawberry
 from strawberry.asgi import GraphQL
-import pandas as pd
 from fastapi import FastAPI, Query
 
 from app.swagger import custom_openapi
