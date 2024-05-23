@@ -1,11 +1,7 @@
 services:
   api:
-    build:
-      context: .
-      target: builder
+    build: ./app
+    restart: always
     container_name: challenge-backend
-    environment:
-      PORT: 8000
     ports:
       - '8000:8000'
-    restart: "always"
