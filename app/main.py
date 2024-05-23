@@ -4,14 +4,17 @@ from typing import List
 import strawberry
 from strawberry.asgi import GraphQL
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 
 from app.swagger import custom_openapi
 from app.schemas import Item
+from app.datasource import initialize_items
 
 
 app = FastAPI()
 
+
+# GraphQL endpoint
 @strawberry.type
 class Query:
     @strawberry.field
@@ -20,15 +23,17 @@ class Query:
 schema = strawberry.Schema(query=Query)
 app.add_route("/graphql", GraphQL(schema=schema))
 
-# Custom OpenAPI schema for swagger in /docs
+
+# OpenAPI schema for /docs
 app.openapi = lambda: custom_openapi(app)
 
-items = []
-def initialize_items(file_path):
-    data = pd.read_csv(file_path)
-    for index, row in data.iterrows():
-        items.append(Item(**row))
 
-script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, 'inventory.csv')
-initialize_items(file_path)
+# Natural language processing endpoint
+@app.get("/nlp")
+async def search_nlp(q: str, lang: str = "en"):
+    result = f"NLP query: {q}, language: {lang}"
+    return {"result": result}
+
+
+# Initialize the items list
+items = initialize_items()
